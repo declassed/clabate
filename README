@@ -1,0 +1,14 @@
+Clabate: minimalistic class-based templates for Python.
+
+Clabate is a minimalistic template system for Python language.
+It utilizes python class hierarchy, class attributes, and PEP 3101 string formatting.
+
+The basic Template class can be used for bare textual templates, such as configuration files.
+
+For markup, Clabate escapes everything by default, helping to avoid overlooked unescaped substitutions
+as much as possible.
+
+You can find more or less comprehensive examples under clabate/examples which is also a simple test suite.
+
+An introduction to Clabate:
+https://declassed.art/en/blog/2022/06/29/clabate-class-based-templates
