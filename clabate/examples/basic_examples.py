@@ -8,7 +8,7 @@ Basic examples.
 import time
 from types import SimpleNamespace
 
-from .. import Template, LeanTemplate, escape_braces
+from .. import Template, LeanTemplate, escape_braces, depends_on
 
 #-----------------------------------------------------------------------------------
 # Inheritance
@@ -193,11 +193,9 @@ class PropertiesExample(Template):
     @property
     # A property can use some value from the context, but
     # clabate can't detect such dependencies.
-    # Here's a workaround, `depends_on` keyword argument.
-    # This solution might look ugly, but given that python already
-    # has uglier options * and / in function arguments,
-    # this does not look too bad.
-    def something_to_love(self, context, depends_on=['kind_of_freedom']):
+    # Here's a workaround, `depends_on` decorator.
+    @depends_on('kind_of_freedom')
+    def something_to_love(self, context):
         return f'{context.kind_of_freedom} freedom'
 
     @property

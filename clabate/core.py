@@ -14,6 +14,32 @@ import types
 #-----------------------------------------------------------------------------------
 # Helper classes and functions.
 
+def depends_on(names):
+    '''
+    A decorator to give a hint that a property depends on other values.
+    This might be necessary when a property getter uses formatted string
+    from the rendering context:
+
+        moo = '{foo}'
+        bar = '{baz}'
+
+        @property
+        @depends_on('bar')
+        def foo(self, context):
+            return f'{context.bar}'
+
+    Args:
+        names: a list, a set, or a string with names separated by space
+    '''
+    if isinstance(names, str):
+        names = names.split()
+
+    def decorator(func):
+        func.depends_on = names
+        return func
+
+    return decorator
+
 class MissingValue:
     '''
     Mixin class for missing substitutions, constructed by _make_missing_value.
@@ -424,25 +450,10 @@ class Template:
                 # if name refers to a property, check depends_on
                 if name in self._properties:
                     prop = self._properties[name]
-                    depends_on = self._get_property_dependencies(prop)
+                    depends_on = getattr(prop.fget, 'depends_on', [])
                     for prop_dependency in depends_on:
                         template_dependencies[name].add(prop_dependency)
         return template_dependencies
-
-    def _get_property_dependencies(self, prop):
-        '''
-        Get defaults for depends_on argument of property getter.
-        '''
-        argspec = inspect.getfullargspec(prop.fget)
-        try:
-            depends_on_index = argspec.args.index('depends_on')
-        except ValueError:
-            return []
-        defaults_index = depends_on_index - len(argspec.args)
-        dependencies = argspec.defaults[defaults_index]
-        if isinstance(dependencies, str):
-            dependencies = [dependencies]
-        return dependencies
 
     def _find_formatting_order(self, template_dependencies):
         '''

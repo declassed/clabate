@@ -9,12 +9,12 @@ class attributes, and string formatting.
 
 '''
 
-__version__ = '0.4.1'
+__version__ = '0.4.4'
 
 # shortcut imports
 from .core import (
     Template, LeanTemplate,
-    alter_braces, escape_braces
+    alter_braces, depends_on, escape_braces
 )
 from .markup import (
     MarkupTemplate, MinifiedMarkupTemplate, Markup, Escaped,
