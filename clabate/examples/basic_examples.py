@@ -288,10 +288,7 @@ class IndentationExample(Template):
                     {primary_ns[0]}.{idna_domain}.  ; MNAME
                     {rname}  ; RNAME
                     {timestamp}  ; SERIAL
-                    3600  ; REFRESH
-                    60    ; RETRY
-                    1W    ; EXPIRY
-                    60    ; MINIMUM Negative Cache TTL
+                    {cache_params}
                     )
         {nameservers}
         {resource_records}
@@ -307,6 +304,13 @@ class IndentationExample(Template):
     def timestamp(self, context):
         #return int(time.time())
         return 1654791702
+
+    cache_params = '''
+        3600  ; REFRESH
+        60    ; RETRY
+        1W    ; EXPIRY
+        60    ; MINIMUM Negative Cache TTL
+    '''
 
     @property
     def nameservers(self, context):

@@ -388,10 +388,11 @@ class Template:
         # Also, such a formatting is important for markup templates, when escaping is involved.
         temp_context = Context(self)
         for attr_name, attr_value in potential_templates.items():
+            dedented = self.dedent(attr_value)
             if attr_name in kwargs:
-                setattr(self, attr_name, attr_value)
+                setattr(self, attr_name, dedented)
             else:
-                self._data_attributes[attr_name] = self._formatter.vformat(attr_value, tuple(), temp_context)
+                self._data_attributes[attr_name] = self._formatter.vformat(dedented, tuple(), temp_context)
 
     def create_formatter(self):
         '''
